@@ -219,8 +219,8 @@ public class StreamAPIPractice {
 
         // Q20: Find distinct cities where employees work
         // Expected: List of unique cities
-        List<String> city = employees.stream().map(Employee::getCity).distinct().toList();
-        System.out.println(city);
+        List<String> uniqueCity = employees.stream().map(Employee::getCity).distinct().toList();
+        System.out.println(uniqueCity);
 
         // Q21: Find average age of employees
         // Expected: Average age (around 31-32)
@@ -400,40 +400,80 @@ public class StreamAPIPractice {
 
         // Q49: Find average salary of female employees
         // Expected: Average salary of all females
-
+        Double averageSalaryOfFemale = employees
+                .stream()
+                .filter(employee -> "Female".equalsIgnoreCase(employee.getGender())).mapToDouble(Employee::getSalary).average().orElse(0.0);
+        System.out.println(averageSalaryOfFemale);
 
         // Q50: Group employees by city and count them
         // Expected: Map of city to count
+        Map<String, Long> mapOfCityToCount = employees.stream().collect(Collectors.groupingBy(Employee::getCity, Collectors.counting()));
+        System.out.println(mapOfCityToCount);
 
         // Q51: Find employees with exactly 5 years experience
         // Expected: Employees where experienceYears = 5
+        List<Employee> employeesWith5YearsOfExperience = employees.stream().filter(employee -> employee.getExperienceYears() == 5).toList();
+        System.out.println(employeesWith5YearsOfExperience);
 
         // Q52: Find total number of projects
         // Expected: Count of distinct projects
+        Set<String> distinctProjectNames = employees.stream().map(Employee::getProjectName).collect(Collectors.toSet());
+        System.out.println(distinctProjectNames);
 
         // Q53: Find employees whose salary is above department average
         // Expected: Complex grouping and filtering
+        Map<String, Double> departmentWithAverageSalary = employees.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.averagingDouble(Employee::getSalary)));
+        List<Employee> employeeWhoseSalaryIsMoreThanAverageSalary = employees
+                .stream()
+                .filter(employee -> employee.getSalary() > departmentWithAverageSalary.get(employee.getDepartment())).toList();
+        System.out.println(employeeWhoseSalaryIsMoreThanAverageSalary);
 
         // Q54: Find the most common designation
         // Expected: Designation that appears most frequently
+        Map<String, Long> designationPeople = employees.stream().collect(Collectors.groupingBy(Employee::getDesignation, Collectors.counting()));
+        String frequentDesignation = designationPeople.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
+        System.out.println(frequentDesignation);
+
 
         // Q55: Calculate salary increment of 10% for all IT employees
         // Expected: Map of IT employee names to new salary
+        Map<String, Double> incrementValuesOfITMembers = employees.stream().filter(employee -> "IT".equalsIgnoreCase(employee.getDepartment())).collect(Collectors.toMap(
+                employee -> employee.getName(),
+                employee -> employee.getSalary() * 1.10
+        ));
+        System.out.println(incrementValuesOfITMembers);
 
         // Q56: Find employees in ascending order of experience
         // Expected: Employees sorted by experience ascending
+        List<Employee> employeeExperienceSorted = employees.stream().sorted(Comparator.comparing(Employee::getExperienceYears)).toList();
+        employeeExperienceSorted.forEach(System.out::println);
 
         // Q57: Find city with maximum employees
         // Expected: City name with most employees
+        employees.stream().collect(Collectors.groupingBy(Employee::getCity, Collectors.counting())).
+                entrySet().stream().max(Comparator.comparing(Map.Entry::getValue))
+                .ifPresent(entry -> System.out.println(entry.getKey()));
 
         // Q58: Get last 10 employees by ID
         // Expected: Employees with ID 91-100
+        List<Employee> last10Employees = employees.
+                stream().
+                sorted(Comparator.comparing(Employee::getId)).skip(Math.max(0, employees.size() - 10)).toList();
+        System.out.println(last10Employees);
 
         // Q59: Find employees who are neither from IT nor HR
         // Expected: Employees from other departments
+        List<Employee> employeesExceptHRorIT = employees
+                .stream()
+                .filter(
+                        employee -> !"IT".equalsIgnoreCase(employee.getDepartment()) && !"HR".equalsIgnoreCase(employee.getDepartment())).toList();
+        System.out.println(employeesExceptHRorIT);
 
         // Q60: Calculate average performance rating by department
         // Expected: Map of department to avg rating
+        Map<String, Double> departmentAverageRating = employees.stream().collect(Collectors.groupingBy(Employee::getDepartment,
+                Collectors.averagingDouble(Employee::getPerformanceRating)));
+        System.out.println(departmentAverageRating);
 
         // Q61: Find employees with name length > 12 characters
         // Expected: Employees with longer names

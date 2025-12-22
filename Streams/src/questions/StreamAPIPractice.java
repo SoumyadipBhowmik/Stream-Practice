@@ -2,6 +2,7 @@ package questions;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StreamAPIPractice {
 
@@ -293,54 +294,113 @@ public class StreamAPIPractice {
 
         // Q33: Find employees whose name contains "Kumar"
         // Expected: All employees with "Kumar" in name
+        List<Employee> kumarEmployees = employees.stream().filter(employee -> employee.getName().contains("Kumar")).toList();
+        kumarEmployees.forEach(employee -> System.out.println(employee.getName()));
 
         // Q34: Find second youngest employee
         // Expected: Employee with 2nd lowest age
+        Employee secondYoungestEmployee = employees.stream().sorted(Comparator.comparing(Employee::getAge)).skip(1).findFirst().orElse(null);
+        System.out.println(secondYoungestEmployee);
 
         // Q35: Calculate total salary by department
         // Expected: Map of department to total salary
+        Map<String, Double> totalSalaryByDept = employees
+                .stream()
+                .collect(Collectors
+                        .groupingBy(Employee::getDepartment, Collectors
+                                .summingDouble(Employee::getSalary)));
+        System.out.println(totalSalaryByDept);
 
         // Q36: Find employees from Mumbai or Delhi
         // Expected: Employees from these two cities
+        List<Employee> listOfEmployeesFromDelhiOrMumbai = employees
+                .stream()
+                .filter(employee -> employee.getCity().equals("Mumbai") || employee.getCity().equals("Delhi"))
+                .toList();
+
+        listOfEmployeesFromDelhiOrMumbai.forEach(employee -> System.out.println(employee.getName() + " -> " + employee.getCity()));
 
         // Q37: Find average experience of employees
         // Expected: Average of experienceYears
+        Double averageYearsOfExperience = employees
+                .stream()
+                .mapToInt(Employee::getExperienceYears).average().getAsDouble();
+        System.out.println(averageYearsOfExperience);
+
 
         // Q38: Find remote employees count
         // Expected: Count where isRemote = true
+        long countOfRemoteEmployees = employees.stream().filter(Employee::isRemote).count();
+        System.out.println(countOfRemoteEmployees);
 
         // Q39: Sort employees by salary in descending order
         // Expected: All employees sorted by highest salary first
+        List<Employee> sortedSalary = employees.stream().sorted(Comparator.comparing(Employee::getSalary).reversed()).toList();
+        sortedSalary.forEach(employee -> System.out.println(employee.getName() + " -> " + employee.getSalary()));
 
         // Q40: Find employees with salary between 70000 and 80000
         // Expected: Employees in this salary range
+        List<Employee> salaryBetween7Kto8K = employees
+                .stream()
+                .filter(employee -> employee.getSalary() >= 70000 && employee.getSalary() <= 80000).toList();
+        System.out.println("Employee salary between 70000 to 80000");
+        salaryBetween7Kto8K.forEach(employee -> System.out.println(employee.getName() + " -> " + employee.getSalary()));
 
         // Q41: Find department with highest average salary
         // Expected: Department name with max average salary
+        Map<String, Double> mapOfDepartmentsWithAverageSalary = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment,
+                        Collectors.averagingDouble(Employee::getSalary)));
+
+        mapOfDepartmentsWithAverageSalary
+                .entrySet()
+                .stream()
+                .max((e1, e2) -> Double.compare(e1.getValue(), e2.getValue()))
+                .ifPresent(System.out::println);
+
 
         // Q42: Find employees who joined in 2019
         // Expected: Employees where yearOfJoining = 2019
+        List<Employee> employeesJoinedin2019 = employees.stream().filter(employee -> employee.getYearOfJoining() == 2019).toList();
+        System.out.println(employeesJoinedin2019);
 
         // Q43: Get list of all designations (unique)
         // Expected: Distinct designations
+        Set<String> distinctDesignations = employees.stream().map(Employee::getDesignation).collect(Collectors.toSet());
+        System.out.println(distinctDesignations);
 
         // Q44: Find employees older than 35
         // Expected: Employees where age > 35
+        List<Employee> employeesAbove35 = employees.stream().filter(employee -> employee.getAge() > 35).toList();
+        System.out.println(employeesAbove35);
 
         // Q45: Count employees in each city
         // Expected: Map of city to employee count
+        Map<String, Long> cityToEmployeeCount = employees
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getCity, Collectors.counting()));
+        System.out.println(cityToEmployeeCount);
 
         // Q46: Find highest paid employee in IT department
         // Expected: IT employee with max salary
+        Optional<Employee> maxSalary = employees
+                .stream()
+                .filter(employee -> "IT".equals(employee.getDepartment())).max(Comparator.comparing(Employee::getSalary));
+        maxSalary.ifPresent(System.out::println);
 
         // Q47: Find employees with performance rating below 4.0
         // Expected: Employees with rating < 4.0
+        List<Employee> listOfEmployeesBelow4 = employees.stream().filter(employee -> employee.getPerformanceRating() < 4).toList();
+        System.out.println(listOfEmployeesBelow4);
 
         // Q48: Check if any employee is from Kolkata
         // Expected: false (no employee from Kolkata)
+        List<Employee> employeeFromKolkata = employees.stream().filter(employee -> "Kolkata".equals(employee.getCity())).toList();
+        System.out.println(employeeFromKolkata);
 
         // Q49: Find average salary of female employees
         // Expected: Average salary of all females
+
 
         // Q50: Group employees by city and count them
         // Expected: Map of city to count

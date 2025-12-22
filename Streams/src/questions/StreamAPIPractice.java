@@ -1,11 +1,7 @@
 package questions;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class StreamAPIPractice {
 
@@ -252,25 +248,48 @@ public class StreamAPIPractice {
 
         // Q26: Find 3rd highest salary
         // Expected: 3rd highest distinct salary value
-
+        Double thirdHighestSalary = employees.stream().map(Employee::getSalary).distinct().sorted(Comparator.reverseOrder()).skip(2).findFirst().get();
+        System.out.println(thirdHighestSalary);
 
         // Q27: Find employees working on "Project Alpha"
         // Expected: All employees where projectName = "Project Alpha"
+        List<Employee> projectAlpha = employees.stream().filter(employee -> employee.getProjectName().equals("Project Alpha")).toList();
+        System.out.println(projectAlpha);
 
         // Q28: Count male and female employees separately
         // Expected: Male count and Female count
+        Map<String, Long> genderCount = employees.stream().collect(Collectors.groupingBy(Employee::getGender, Collectors.counting()));
+        System.out.println(genderCount);
 
         // Q29: Find average salary of IT department
         // Expected: Average salary of IT employees
+        double averageItSalary = employees.stream()
+                .filter(employee -> employee.getDepartment().equals("IT"))
+                .mapToDouble(Employee::getSalary).average().orElse(0.0);
+        System.out.println(averageItSalary);
 
         // Q30: Find employees with performance rating >= 4.5
         // Expected: High performers with rating 4.5 or above
+        List<Employee> employeeListWithHighPerformers = employees.stream()
+                .filter(employee -> employee.getPerformanceRating() > 4.5)
+                .toList();
+        System.out.println(employeeListWithHighPerformers);
 
         // Q31: Find departments with more than 15 employees
         // Expected: Departments having > 15 employees
+        List<String> departmentWithMoreThan15Employees = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()))
+                .entrySet().stream().filter(departments -> departments.getValue() > 15)
+                .map(Map.Entry::getKey).toList();
+        System.out.println(departmentWithMoreThan15Employees);
 
         // Q32: Find youngest employee in each department
         // Expected: Map of department to youngest employee
+        Map<String, Employee> departmentWithYoungestEmployees = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.collectingAndThen(
+                        Collectors.minBy(Comparator.comparing(Employee::getAge)), Optional::get
+                )));
+        departmentWithYoungestEmployees.forEach((dept, emp) -> System.out.println(dept + " -> " + emp.getName()));
 
         // Q33: Find employees whose name contains "Kumar"
         // Expected: All employees with "Kumar" in name

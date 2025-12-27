@@ -1,3 +1,5 @@
+package string_manipulation;
+
 import java.util.Scanner;
 
 public class ReverseAString {

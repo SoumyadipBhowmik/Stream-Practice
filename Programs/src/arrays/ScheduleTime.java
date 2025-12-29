@@ -9,10 +9,46 @@ package arrays;
  */
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
 public class ScheduleTime {
+
+    private static int[][] mergeIntervals(int[][] intervals) {
+
+        if (intervals.length < 2) return intervals;
+
+        Arrays.sort(intervals, Comparator.comparing(a -> a[0]));
+        List<int[]> answer = new ArrayList<>();
+
+        int[] newInterval = intervals[0]; // [1,3]
+        answer.add(newInterval);
+
+        for(int index = 1; index < intervals.length; index++) {
+            int[] interval = intervals[index]; //[2,6]
+            if (interval[0] <= newInterval[1]) {
+                newInterval[1] = Math.max(interval[1], newInterval[1]);
+            } else {
+                newInterval = interval;
+                answer.add(newInterval);
+            }
+        }
+        return answer.toArray(new int[answer.size()][]);
+    }
+
     public static void main(String[] args) {
 
-        int[][] arr = {{1, 3}, {2, 6}, {8, 10}, {15, 20}};
+        int[][] arr = {
+                {1, 3},
+                {2, 6},
+                {8, 10},
+                {15, 20}
+        };
+
+        int[][] answer = mergeIntervals(arr);
+        System.out.println(Arrays.deepToString(answer));
 
     }
 }

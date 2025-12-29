@@ -4,27 +4,26 @@ import java.util.Scanner;
 
 public class ReverseAString {
 
-    public static String reverseString(String input) {
+    private static void reverseAString(String word) {
+        char[] letters = word.toCharArray();
+        int firstIndex = 0;
+        int lastIndex = letters.length - 1;
 
-        char[] chars = input.toCharArray();
-        int left = 0;
-        int right = chars.length - 1;
-
-        while(left < right) {
-            char temp = chars[left];
-            chars[left] = chars[right];
-            chars[right] = temp;
-            left++;
-            right--;
+        while (firstIndex < lastIndex) {
+            char temp = letters[firstIndex];
+            letters[firstIndex] = letters[lastIndex];
+            letters[lastIndex] = temp;
+            firstIndex++;
+            lastIndex--;
         }
-        return new String(chars);
+        System.out.println(new String(letters));
     }
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        System.out.println(reverseString(input));
+        reverseAString(input);
         scanner.close();
     }
 }

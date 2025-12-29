@@ -9,10 +9,11 @@ public class OccurrenceOfNumber {
 
     private static void findOccurrence(List<Integer> numbers) {
         Map<Integer, Integer> map = new HashMap<>();
-        for (int number: numbers) {
+
+        for (int number : numbers) {
             map.put(number, map.getOrDefault(number, 0) + 1);
         }
-        map.forEach((key, value) -> System.out.println(key + " is repeated " + value + " times."));
+        map.forEach((integer, integer2) -> System.out.println(integer + " " + integer2));
     }
 
     public static void main(String[] args) {

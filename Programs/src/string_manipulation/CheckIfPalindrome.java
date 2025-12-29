@@ -8,7 +8,7 @@ public class CheckIfPalindrome {
     public static boolean checkIfPalindrome (String input) {
 
         int i = 0;
-        int j = input.length()- 1;
+        int j = input.length() - 1;
 
         while (i < j) {
             if (input.charAt(i) != input.charAt(j)) {

@@ -5,64 +5,63 @@ import java.util.Arrays;
 public class MergeSort {
 
     private static void merge(int[] inputArray, int[] leftHalfArray, int[] rightHalfArray) {
-        int leftHalfArraySize = leftHalfArray.length;
-        int rightHalfArraySize = rightHalfArray.length;
 
-        int leftHalfArrayIndex = 0;
-        int rightHalfArrayIndex = 0;
+        int leftArraySize = leftHalfArray.length;
+        int rightArraySize = rightHalfArray.length;
+
+        int leftArrayIndex = 0;
         int inputArrayIndex = 0;
+        int rightArrayIndex = 0;
 
-        while (leftHalfArrayIndex < leftHalfArraySize && rightHalfArrayIndex < rightHalfArraySize) {
-            if (leftHalfArray[leftHalfArrayIndex] <= rightHalfArray[rightHalfArrayIndex]) {
-                inputArray[inputArrayIndex] = leftHalfArray[leftHalfArrayIndex];
-                leftHalfArrayIndex++;
+        while (leftArrayIndex < leftArraySize && rightArrayIndex < rightArraySize) {
+            if (leftHalfArray[leftArrayIndex] <= rightHalfArray[rightArrayIndex]) {
+                inputArray[inputArrayIndex] = leftHalfArray[leftArrayIndex];
+                leftArrayIndex++;
             } else {
-                inputArray[inputArrayIndex] = rightHalfArray[rightHalfArrayIndex];
-                rightHalfArrayIndex++;
+                inputArray[inputArrayIndex] = rightHalfArray[rightArrayIndex];
+                rightArrayIndex++;
             }
             inputArrayIndex++;
         }
 
-        while (leftHalfArrayIndex < leftHalfArraySize) {
-            inputArray[inputArrayIndex] = leftHalfArray[leftHalfArrayIndex];
+        while(leftArrayIndex < leftArraySize) {
+            inputArray[inputArrayIndex] = leftHalfArray[leftArrayIndex];
+            leftArrayIndex++;
             inputArrayIndex++;
-            leftHalfArrayIndex++;
         }
 
-        while (rightHalfArrayIndex < rightHalfArraySize) {
-            inputArray[inputArrayIndex] = rightHalfArray[rightHalfArrayIndex];
+        while(rightArrayIndex < rightArraySize) {
+            inputArray[inputArrayIndex] = rightHalfArray[rightArrayIndex];
+            rightArrayIndex++;
             inputArrayIndex++;
-            rightHalfArrayIndex++;
         }
+
     }
 
     private static void mergeSort(int[] inputArray) {
+        int length = inputArray.length;
+        int midIndex = length / 2;
+        int[] leftHalfArray = new int[midIndex];
+        int[] rightHalfArray = new int[length - midIndex];
 
-        int lengthOfInputArray = inputArray.length;
-        int midIndex = lengthOfInputArray / 2;
-        int[] leftHalf = new int[midIndex];
-        int[] rightHalf = new int[lengthOfInputArray - midIndex];
-
-        if (lengthOfInputArray < 2) {
-            return;
-        }
+        if (length < 2) return;
 
         for (int i = 0; i < midIndex; i++) {
-            leftHalf[i] = inputArray[i];
+            leftHalfArray[i] = inputArray[i];
         }
 
-        for (int i = midIndex; i < lengthOfInputArray; i++) {
-            rightHalf[i - midIndex] = inputArray[i];
+        for (int i = midIndex; i < length; i++) {
+            rightHalfArray[i - midIndex] = inputArray[i];
         }
 
-        mergeSort(leftHalf);
-        mergeSort(rightHalf);
-        merge(inputArray, leftHalf, rightHalf);
+        mergeSort(leftHalfArray);
+        mergeSort(rightHalfArray);
+        merge(inputArray, leftHalfArray, rightHalfArray);
     }
 
 
     public static void main(String[] args) {
-        int[] inputArray = {2, 3, 5, 7, 88, 1, 33, 2, 55, 4, 12, 6, 5, 40};
+        int[] inputArray = {5, 6, 2, 3, 5, 8, 69, 52, 3, 54, 8, 2, 3, 7};
         System.out.println("Before Merge Sort");
         printArray(inputArray);
         mergeSort(inputArray);
@@ -71,7 +70,7 @@ public class MergeSort {
     }
 
     private static void printArray(int[] inputArray) {
-        Arrays.stream(inputArray).forEach((integer) -> System.out.print(integer + " "));
+        Arrays.stream(inputArray).forEach(integer -> System.out.print(integer + " "));
         System.out.println();
     }
 }

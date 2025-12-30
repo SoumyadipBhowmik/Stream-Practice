@@ -21,15 +21,15 @@ public class ScheduleTime {
         if (intervals.length < 2) return intervals;
 
         Arrays.sort(intervals, Comparator.comparing(a -> a[0]));
-        List<int[]> answer = new ArrayList<>();
 
-        int[] newInterval = intervals[0]; // [1,3]
+        List<int[]> answer = new ArrayList<>();
+        int[] newInterval = intervals[0]; //[1,3]
         answer.add(newInterval);
 
         for(int index = 1; index < intervals.length; index++) {
-            int[] interval = intervals[index]; //[2,6]
-            if (interval[0] <= newInterval[1]) {
-                newInterval[1] = Math.max(interval[1], newInterval[1]);
+            int[] interval = intervals[index]; // [2,6]
+            if(interval[0] <= newInterval[1]) {
+                newInterval[1] = Math.max(newInterval[1], interval[1]);
             } else {
                 newInterval = interval;
                 answer.add(newInterval);

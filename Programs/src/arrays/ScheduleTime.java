@@ -17,23 +17,22 @@ import java.util.List;
 public class ScheduleTime {
 
     private static int[][] mergeIntervals(int[][] intervals) {
-
         if (intervals.length < 2) return intervals;
 
-        Arrays.sort(intervals, Comparator.comparing(a -> a[0]));
-
+        Arrays.sort(intervals, Comparator.comparing(interval -> interval[0]));
         List<int[]> answer = new ArrayList<>();
-        int[] newInterval = intervals[0]; //[1,3]
-        answer.add(newInterval);
+        int[] newInterval = intervals[0]; // [1,3]
+        answer.add(newInterval); //[[1,3]]
 
-        for(int index = 1; index < intervals.length; index++) {
+        for (int index = 1; index < intervals.length; index++) {
             int[] interval = intervals[index]; // [2,6]
-            if(interval[0] <= newInterval[1]) {
-                newInterval[1] = Math.max(newInterval[1], interval[1]);
+            if (interval[0] <= newInterval[1]) {
+                newInterval[1] = Math.max(interval[1], newInterval[1]);
             } else {
                 newInterval = interval;
                 answer.add(newInterval);
             }
+
         }
         return answer.toArray(new int[answer.size()][]);
     }
@@ -42,6 +41,8 @@ public class ScheduleTime {
 
         int[][] arr = {
                 {1, 3},
+                {1, 2},
+                {2, 8},
                 {2, 6},
                 {8, 10},
                 {15, 20}

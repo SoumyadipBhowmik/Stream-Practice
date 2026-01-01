@@ -1,27 +1,20 @@
 package arrays;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FindDuplicateElements {
 
-    private static List<Integer> findDuplicates(int[] input) {
+    private static List<Integer> findDuplicates(int[] numbers) {
+
         Map<Integer, Integer> map = new HashMap<>();
-        List<Integer> ans = new ArrayList<>();
-
-        for (int num: input) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
+        for(int number : numbers) {
+            map.put(number, map.getOrDefault(number, 0) + 1);
         }
 
-        for (Map.Entry<Integer, Integer> entry: map.entrySet()) {
-
-            if (entry.getValue() > 1) {
-                ans.add(entry.getKey());
-            }
-        }
-        return ans;
+        return map.entrySet().stream().filter(entry -> entry.getValue() > 1)
+                .map(Map.Entry::getKey).toList();
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package done;
+package done.easy;
 
 //Check if two strings are anagrams (same letters, different order).
 //Input: s = "anagram", t = "nagaram"
@@ -13,31 +13,24 @@ public class ValidAnagrams {
         String word1 = rawWord1.toLowerCase();
         String word2 = rawWord2.toLowerCase();
 
-        if(word1.length() != word2.length()) return false;
-
         Map<Character, Integer> map = new HashMap<>();
-        for(char word: word1.toCharArray()) {
-            map.put(word, map.getOrDefault(word, 0) + 1);
+        for (int index = 0; index < word1.length(); index++) {
+            map.put(word1.charAt(index), map.getOrDefault(word1.charAt(index), 0) + 1);
         }
 
-        for(char word: word2.toCharArray()) {
-            if(!map.containsKey(word)) {
-                return false;
-            }
-            map.put(word, map.getOrDefault(word, 0) - 1);
+        for (int index = 0; index < word2.length(); index++) {
+            if (!map.containsKey(word2.charAt(index))) return false;
+            map.put(word2.charAt(index), map.getOrDefault(word2.charAt(index), 0) - 1);
         }
 
-        for(int count: map.values()) {
-            if (count != 0) {
-                return false;
-            }
+        for (int count : map.values()) {
+            if (count != 0) return false;
         }
-
         return true;
     }
 
     public static void main(String[] args) {
-        String input = "anagram";
+        String input = "Anagram";
         String t = "nagaram";
 
         System.out.println(validAnagram(input, t));

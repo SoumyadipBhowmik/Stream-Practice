@@ -1,4 +1,4 @@
-package done;
+package done.easy;
 
 //Given an array of integers and a target, return indices of two numbers that add up to target.
 
@@ -13,18 +13,17 @@ public class TwoSum {
 
     private static int[] twoSum(int[] input, int target) {
 
-        if (input.length < 2) return new int[0];
         Map<Integer, Integer> map = new HashMap<>();
-
-        for (int index = 0; index < input.length; index++) {
-            int complement = target - input[index];
+        for(int i = 0; i < input.length; i++) {
+            int complement = target - input[i];
             if(map.containsKey(complement)) {
-                return new int[]{complement, index};
+                return new int[]{map.get(complement), i};
             }
-            map.put(input[index], index);
+            map.put(input[i], i);
         }
         return new int[0];
     }
+
 
     public static void main(String[] args) {
         int[] arr = {2,7,11,15};
